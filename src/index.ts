@@ -1,15 +1,21 @@
 import express from "express";
+import bodyParser from "body-parser";
+import { RegisterRoutes } from "../dist/routes";
 
-const app = express();
-const port = 8080; // default port to listen
+export const app = express();
 
-// define a route handler for the default home page
-app.get( "/", ( req, res ) => {
-    res.send( "Hello world!" );
-} );
+// Use body parser to read sent json payloads
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+  })
+);
+app.use(bodyParser.json());
 
+RegisterRoutes(app);
 
-// start the Express server
-app.listen( port, () => {
-    console.log( `server started at http://localhost:${ port }` );
-} );
+const port = process.env.PORT || 8000;
+
+app.listen(port, () =>
+  console.log(`Example app listening at http://localhost:${port}`)
+);
